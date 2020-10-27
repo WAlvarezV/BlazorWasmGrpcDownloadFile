@@ -1,0 +1,35 @@
+﻿syntax = "proto3";
+option csharp_namespace = "Protos";
+
+package Protos;
+
+service FileSrv {
+    rpc UploadStream (stream Chunk) returns (ResponseStatus);
+    rpc DownloadStream (FileRequest) returns (stream Chunk);
+    rpc BidirectionalStream (stream FileRequest) returns (stream Chunk);
+}
+
+message Chunk {
+   bytes Content = 1;
+}
+
+message FileRequest {
+   string Path = 1;
+}
+
+message FileProto {
+    string Name = 1;
+    string Base64 = 2;
+    string MimeType = 3;
+}
+
+message ResponseStatus {
+    string Message = 1;
+    UploadStatusCode Code = 2;
+}
+
+enum UploadStatusCode {
+    Unknown = 0;
+    Ok = 1;
+    Failed = 2;
+}
