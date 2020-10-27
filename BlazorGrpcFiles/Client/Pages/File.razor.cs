@@ -24,21 +24,29 @@ namespace BlazorGrpcFiles.Client.Pages
 
         public async Task DownloadFile()
         {
-            var fileName = "/Users/themakers/Documents/PREDICAS/archivo1.PDF";
+
+            Console.WriteLine($"Descargando archivo. inicio: {DateTime.Now.ToLongTimeString()}");
+            var fileName = "G:\\test 42mb.pdf";
+
             using var call = FileClient.DownloadStream(new FileRequest { Path = fileName });
             try
             {
                 var result = new StringBuilder();
-                Console.WriteLine("Descargando archivo.");
+
                 await foreach (var message in call.ResponseStream.ReadAllAsync())
                 {
                     result.Append(Encoding.UTF8.GetString(message.Content.ToByteArray()));
                 }
+
                // byte[] file = Encoding.ASCII.GetBytes(result.ToString());
              //  await JSRuntime.SaveFileAs("nuevoDescargado.pdf", Convert.FromBase64String(result.ToString()));
                 await JSRuntime.SaveFileAs("nuevoDescargado.pdf",Convert.FromBase64String(result.ToString()) );
                 
-               Console.WriteLine("Descargó archivo.");
+
+                Console.WriteLine($"Descargó archivo. finalizó: {DateTime.Now.ToLongTimeString()}");
+                await JSRuntime.SaveFileAs("nuevoDescargado.pdf", Convert.FromBase64String(result.ToString()));
+                Console.WriteLine($"Crear el archivo Cliente. finalizó: {DateTime.Now.ToLongTimeString()}");
+
             }
             catch (Exception ex)
             {
