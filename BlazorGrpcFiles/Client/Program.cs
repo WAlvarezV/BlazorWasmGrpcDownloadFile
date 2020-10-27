@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Text;
+using BlazorDownloadFile;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components;
 using Grpc.Net.Client.Web;
 using Grpc.Net.Client;
+using Microsoft.JSInterop;
 using Protos;
 
 namespace BlazorGrpcFiles.Client
@@ -34,8 +36,9 @@ namespace BlazorGrpcFiles.Client
                 // Now we can instantiate gRPC clients for this channel
                 return new FileSrv.FileSrvClient(channel);
             });
-
-
+            builder.Services.AddBlazorDownloadFile();
+            
+            
             await builder.Build().RunAsync();
         }
     }
